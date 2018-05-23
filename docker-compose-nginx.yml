@@ -1,0 +1,28 @@
+--- 
+version: "3"
+services: 
+  nginx:
+    env_file: nginx.env
+    image: "projectethan007/nginx"
+#    image: "renuraj18/nginx"
+    networks: 
+      - mynet
+    ports:
+      - "97:80"
+    #  - "443:443"
+    volumes:
+#      - nginx_config:/etc/nginx
+      - "nginx_config:/resources"
+      
+volumes:
+  nginx_config:
+#   driver: rexray/ebs
+  #  external: true
+#  resources:
+#    driver: rexray/ebs
+#    external: true
+    
+
+networks:
+  mynet:
+    external: true

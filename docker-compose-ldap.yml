@@ -1,0 +1,44 @@
+--- 
+version: "3"
+services: 
+  ldap: 
+    env_file: ldap.env
+    deploy: 
+      replicas: 1
+      restart_policy:
+        condition: none
+    image: "accenture/adop-ldap:0.1.3"
+    networks: 
+      - mynet
+    ports: 
+      - "99:389/tcp"
+    volumes: 
+      - ldap_db:/var/lib/ldap
+#      - ldap_db:/etc/ldap
+  ldap-phpadmin:
+    env_file: ldap-phpadmin.env
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        max_attempts: 3
+    image: "accenture/adop-ldap-phpadmin:0.1.0"
+    networks: 
+      - mynet
+    ports:
+      - "98:80" 
+
+volumes:
+  ldap_db:
+#    driver: rexray/ebs
+  #  external: true
+ #     name: ldap_db
+#  ldap_static:
+#    driver: rexray/ebs
+#    external: true
+#      name: ldap_static
+
+networks:
+  mynet:
+    external: true
+
